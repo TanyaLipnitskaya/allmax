@@ -1,0 +1,16 @@
+.NewTask{
+    height: 50vh;
+    width: 50vw;
+    background-color: white;
+    color: black;
+    position: absolute;
+    border: 1px solid black;
+    top: 20vh;
+    left: 30vw;
+    opacity: 0;
+
+}
+
+.active{
+    opacity: 1;
+}

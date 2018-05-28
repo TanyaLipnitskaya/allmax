@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To-Do-List</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="Date">
+        Дата:
+        <span id="js-date"> </span>
+    </div>
+    <div class="AddTask">
+        <button id="js-addTask">
+            <img src="http://omsfree.ru/wp-content/uploads/2017/04/20151012_561baeb6cbfda.png" alt="Add Task" height="48px" width="48px">Добавить задачу</button>
+    </div>
+    <div class="List">
+        <table border="solid">
+            <thead class="Description">
+                <td>№ п/п</td>
+                <td>Название задачи</td>
+                <td>Описание задачи</td>
+                <td>Приоритет</td>
+                <td>Планируемая дата выполнения</td>
+                <td>Фактическая дата выполнения</td>
+                <td>Действия</td>
+
+            </thead>
+            <tbody class="TaskList"></tbody>
+        </table>
+    </div>
+    <div class="NewTask">
+        <form id="modal">
+            <table>
+                <thead class="NewDescription">
+
+                    <tr>Название задачи</tr>
+                    <input type="text" autofocus name="name">
+                    <br>
+                    <tr>Описание задачи</tr>
+                    <input type="text">
+                    <br>
+                    <tr>Приоритет</tr>
+                    <select name="priority" id="">
+                        <option value="ordinary">Обычная</option>
+                        <option value="important">Важная</option>
+                        <option value="asap">Очень важная</option>
+                    </select>
+                    <br>
+                    <tr>Планируемая дата выполнения</tr>
+                    <input type="date">
+                    <button type="submit">Создать задачу</button>
+                    <button>Отмена</button>
+                </thead>
+            </table>
+        </form>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
