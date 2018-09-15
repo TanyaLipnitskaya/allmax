@@ -11,9 +11,9 @@ const createNewTask=(taskTitle)=>{
 
 
 const addTask=document.querySelector(".addTask");
+const modalWindow=document.querySelector('.Modal')
 addTask.onclick=()=>{
-    let promptResult=prompt("Введите название задачи");
-    createNewTask(promptResult);
+    modalWindow.classList.toggle("Modal-disabled");
      
 }
 
