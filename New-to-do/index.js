@@ -17,3 +17,17 @@ addTask.onclick=()=>{
      
 }
 
+const currentForm=document.querySelector('form[name="Form"]');
+currentForm.onsubmit=(event)=> {
+    event.preventDefault()
+    const formElement=event.target.elements;
+    const taskName=formElement.taskName.value;
+    createNewTask(taskName);
+    // modalWindow.classList.add("Modal-disabled");
+    currentForm.reset();
+
+};
+currentForm.onreset=()=> {
+    console.log('Hello');
+    modalWindow.classList.add("Modal-disabled");
+}

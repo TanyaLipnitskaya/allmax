@@ -3,56 +3,59 @@
 
 <head>
     <title>To-Do-v2-remastered-final(2.1)</title>
-    <link rel="stylesheet" href="index.css" type="text/css"/>
+    <link rel="stylesheet" href="index.css" type="text/css" />
 </head>
 
 <body>
-<div class="Date">Дата</div>
-   
+    <div class="Date">Дата</div>
+
     <!-- <table border="solid"> 
         <thead>
             <td>Текущие задачи</td>
             <td>Закрытые задачи</td>
         </thead>
-        <tbody class=""> --> 
-            <!-- все пошло прахом, Костя -->
-            <div class="currentTasks">
-                Текущие задачи
-            <ol class="listOfCurrentTasks">
-                <li>Добавь меня</li>
-            </ol>
-        </div>
-        <button class="addTask">Добавить</button>
+        <tbody class=""> -->
+    <!-- все пошло прахом, Костя -->
+    <div class="currentTasks">
+        Текущие задачи
+        <ol class="listOfCurrentTasks">
+            <li>Добавь меня</li>
+        </ol>
+    </div>
+    <button class="addTask">Добавить</button>
     </tbody>
-</table>
-<div class="Modal Modal-disabled" >Добавить задачу
-    <div class="Inputs">
-        <span>Название задачи
-            <input type="text">
-        </span>
-        <span>Описание задачи
-            <input type="text">
-        </span>
-        <span>Приоритет задачи
-            <select name="selectPriority" id="" >
-                <option value="">Обычная</option>
-                <option value="">Важная</option>
-                <option value="">Очень важная</option>
-            </select>
-        </span>
-        <span>Планируемая дата выполнения задачи
-            <input type="date" name="" id="">
-        </span>
-        <span>Фактическая дата выполнения задачи
-            <input type="date" name="" id="">
-        </span>
+    </table>
+    <div class="Modal Modal-disabled">Добавить задачу
+        <form name="Form" >
+
+            <div class="Inputs">
+                <span>Название задачи
+                    <input type="text" name="taskName">
+                </span>
+                <span>Описание задачи
+                    <input type="text">
+                </span>
+                <span>Приоритет задачи
+                    <select name="selectPriority" id="">
+                        <option value="">Обычная</option>
+                        <option value="">Важная</option>
+                        <option value="">Очень важная</option>
+                    </select>
+                </span>
+                <span>Планируемая дата выполнения задачи
+                    <input type="date" name="" id="">
+                </span>
+                <span>Фактическая дата выполнения задачи
+                    <input type="date" name="" id="">
+                </span>
+            </div>
+            <div class="Buttons">
+                <button type="submit">Создать</button>
+                <button type="reset">Отмена</button>
+            </div>
+        </form>
     </div>
-    <div class="Buttons">
-        <button>Создать</button>
-        <button>Отмена</button>
-    </div>
-</div>
-<script defer src="index.js"></script>
+    <script defer src="index.js"></script>
 </body>
 <footer>
 </footer>
