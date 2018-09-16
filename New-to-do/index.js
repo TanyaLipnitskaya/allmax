@@ -12,13 +12,14 @@ const createNewTask=(taskTitle)=>{
 
 const addTask=document.querySelector(".addTask");
 const modalWindow=document.querySelector('.Modal')
-addTask.onclick=()=>{
+const addTaskOnClick= ()=>{
     modalWindow.classList.toggle("Modal-disabled");
      
 }
+addTask.addEventListener("click", addTaskOnClick);
 
 const currentForm=document.querySelector('form[name="Form"]');
-currentForm.onsubmit=(event)=> {
+const currentFormOnSubmit=(event)=> {
     event.preventDefault()
     const formElement=event.target.elements;
     const taskName=formElement.taskName.value;
@@ -27,7 +28,9 @@ currentForm.onsubmit=(event)=> {
     currentForm.reset();
 
 };
-currentForm.onreset=()=> {
-    console.log('Hello');
-    modalWindow.classList.add("Modal-disabled");
+currentForm.addEventListener("submit", currentFormOnSubmit);
+
+const currentFormOnReset=()=> {
+       modalWindow.classList.add("Modal-disabled");
 }
+currentForm.addEventListener("reset", currentFormOnReset);
