@@ -1,54 +1,70 @@
-let datePlaceHolder = document.getElementById('js-date');
-let getDate = () => datePlaceHolder.innerHTML = Date().toLocaleString()
-datePlaceHolder.innerHTML = getDate();
-const updateDateInterval = setInterval( getDate, 1000);
+const superStorageKey = "key";
+let taskArray = [];
 
-let buttonAddTask = document.getElementById('js-addTask');
-let modalNewTask = document.getElementsByClassName('NewTask')[0];
-let toggleModal = () => {modalNewTask.classList.toggle('active')};
-buttonAddTask.onclick = () => toggleModal()
+const currentDateElement = document.querySelector(".Date");
+currentDateElement.innerHTML = new Date().toLocaleDateString();
 
+const listOfCurrentTasks = document.querySelector(".listOfCurrentTasks");
+const createNewTask = (taskItem) => {
+    taskArray.push(taskItem);
+    const listItem = document.createElement("li");
+    if (taskItem.formIsValid==false){
+        listItem.classList.add("elementIsNotValid");
+    };
+        listItem.innerHTML = taskItem.taskName;
+    listOfCurrentTasks.appendChild(listItem);
+}
 
-let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-let Tasks = allTasks;
-let list = document.getElementsByClassName('TaskList')[0];
-let modalForm = document.getElementById('modal');
-
-let addNewTaskList = (newItem) => {
-    console.log(newItem);
-    if (newItem){
-        newItem.preventDefault ();
-        let [taskName, taskDescription, taskPriority, taskPlannedDate] = newItem.target;
-        Tasks.push ({
-            id: Tasks[Tasks.length -1].id+1, 
-            name: taskName.value,
-            description: taskDescription.value,
-            priority: taskPriority.value,
-            plannedData: taskPlannedDate.value,
-            actualData: ''
-
-        })
-        toggleModal()
-        localStorage.setItem('tasks',JSON.stringify(Tasks))
-    }
+const localStorageTaskArray = localStorage.getItem(superStorageKey)
+if (localStorageTaskArray) {
+    const tempVar = JSON.parse(localStorageTaskArray);
    
-    list.innerHTML = '';
-
-    for (let e=0; e<Tasks.length; e++ ){
-        let tr = document.createElement ('tr'); 
-        let tasksItem = Tasks[e];
-        tr.innerHTML = `<td>${tasksItem.id}</td> 
-                        <td>${tasksItem.name}</td>
-                        <td>${tasksItem.description}</td>
-                        <td>${tasksItem.priority}</td>
-                        <td>${tasksItem.plannedData}</td>
-                        <td>${tasksItem.actualData}</td>`
-        list.appendChild (tr)
+    for (let arrayElement of tempVar) {
+        createNewTask(arrayElement)
     }
+
+}
+
+const addTask = document.querySelector(".addTask");
+const modalWindow = document.querySelector('.Modal')
+const addTaskOnClick = () => {
+    modalWindow.classList.toggle("Modal-disabled");
+}
+addTask.addEventListener("click", addTaskOnClick);
+
+const currentForm = document.querySelector('form[name="Form"]');
+const currentFormOnSubmit = (event) => {
+    event.preventDefault()
+    const formElement = event.target.elements;
+    const taskName = formElement.taskName.value;
+    const taskDescription = formElement.taskDescription.value;
+    const selectPriority = formElement.selectPriority.value;
+    const plannedDate = formElement.plannedDate.value;
+    const actualDate = formElement.actualDate.value;
+
+    const formIsValid = taskName&&taskDescription&&plannedDate;
+
+   
+
+    const taskItem = {
+        taskName,
+        taskDescription,
+        selectPriority,
+        plannedDate,
+        actualDate,
+        formIsValid
+    };
+    
+    createNewTask(taskItem);
+    localStorage.setItem(superStorageKey, JSON.stringify(taskArray));
+
+    // modalWindow.classList.add("Modal-disabled");
+    currentForm.reset();
 };
-modalForm.onsubmit = addNewTaskList;
 
-addNewTaskList ();
+currentForm.addEventListener("submit", currentFormOnSubmit);
 
-
+const currentFormOnReset = () => {
+    modalWindow.classList.add("Modal-disabled");
+}
+currentForm.addEventListener("reset", currentFormOnReset);

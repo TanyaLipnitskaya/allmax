@@ -1,65 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>To-Do-List</title>
-    <link rel="stylesheet" href="index.css">
+    <title>To-Do-v2-remastered-final(2.1)</title>
+    <link rel="stylesheet" href="index.css" type="text/css" />
 </head>
 
 <body>
-    <div class="Date">
-        Дата:
-        <span id="js-date"> </span>
-    </div>
-    <div class="AddTask">
-        <button id="js-addTask">
-            <img src="http://omsfree.ru/wp-content/uploads/2017/04/20151012_561baeb6cbfda.png" alt="Add Task" height="48px" width="48px">Добавить задачу</button>
-    </div>
-    <div class="List">
-        <table border="solid">
-            <thead class="Description">
-                <td>№ п/п</td>
-                <td>Название задачи</td>
-                <td>Описание задачи</td>
-                <td>Приоритет</td>
-                <td>Планируемая дата выполнения</td>
-                <td>Фактическая дата выполнения</td>
-                <td>Действия</td>
+    <div class="Date">Дата</div>
 
-            </thead>
-            <tbody class="TaskList"></tbody>
-        </table>
+    <!-- <table border="solid"> 
+        <thead>
+            <td>Текущие задачи</td>
+            <td>Закрытые задачи</td>
+        </thead>
+        <tbody class=""> -->
+    <!-- все пошло прахом, Костя -->
+    <div class="currentTasks">
+        Текущие задачи
+        <ol class="listOfCurrentTasks">
+            <li>Добавь меня</li>
+        </ol>
     </div>
-    <div class="NewTask">
-        <form id="modal">
-            <table>
-                <thead class="NewDescription">
+    <button class="addTask">Добавить</button>
+    </tbody>
+    </table>
+    <div class="Modal Modal-disabled">Добавить задачу
+        <form name="Form" >
 
-                    <tr>Название задачи</tr>
-                    <input type="text" autofocus name="name">
-                    <br>
-                    <tr>Описание задачи</tr>
-                    <input type="text">
-                    <br>
-                    <tr>Приоритет</tr>
-                    <select name="priority" id="">
-                        <option value="ordinary">Обычная</option>
-                        <option value="important">Важная</option>
-                        <option value="asap">Очень важная</option>
+            <div class="Inputs">
+                <span>Название задачи
+                    <input type="text" name="taskName">
+                </span>
+                <span>Описание задачи
+                    <input name="taskDescription" type="text">
+                </span>
+                <span>Приоритет задачи
+                    <select name="selectPriority" id="">
+                        <option value="">Обычная</option>
+                        <option value="">Важная</option>
+                        <option value="">Очень важная</option>
                     </select>
-                    <br>
-                    <tr>Планируемая дата выполнения</tr>
-                    <input type="date">
-                    <button type="submit">Создать задачу</button>
-                    <button>Отмена</button>
-                </thead>
-            </table>
+                </span>
+                <span>Планируемая дата выполнения задачи
+                    <input name="plannedDate" type="date" id="">
+                </span>
+                <span>Фактическая дата выполнения задачи
+                    <input name="actualDate" type="date" id="">
+                </span>
+            </div>
+            <div class="Buttons">
+                <button type="submit">Создать</button>
+                <button type="reset">Отмена</button>
+            </div>
         </form>
     </div>
-    <script src="index.js"></script>
+    <script defer src="index.js"></script>
 </body>
+<footer>
+</footer>
 
 </html>
