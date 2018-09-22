@@ -5,11 +5,13 @@ const currentDateElement = document.querySelector(".Date");
 currentDateElement.innerHTML = new Date().toLocaleDateString();
 
 const listOfCurrentTasks = document.querySelector(".listOfCurrentTasks");
-const createNewTask = (taskTitle) => {
-    taskArray.push(taskTitle);
-    localStorage.setItem(superStorageKey, JSON.stringify(taskArray));
+const createNewTask = (taskItem) => {
+    taskArray.push(taskItem);
     const listItem = document.createElement("li");
-    listItem.innerHTML = taskTitle.taskName;
+    if (taskItem.formIsValid==false){
+        listItem.classList.add("elementIsNotValid");
+    };
+        listItem.innerHTML = taskItem.taskName;
     listOfCurrentTasks.appendChild(listItem);
 }
 
@@ -19,11 +21,9 @@ if (localStorageTaskArray) {
    
     for (let arrayElement of tempVar) {
         createNewTask(arrayElement)
-
     }
 
 }
-
 
 const addTask = document.querySelector(".addTask");
 const modalWindow = document.querySelector('.Modal')
@@ -42,22 +42,25 @@ const currentFormOnSubmit = (event) => {
     const plannedDate = formElement.plannedDate.value;
     const actualDate = formElement.actualDate.value;
 
+    const formIsValid = taskName&&taskDescription&&plannedDate;
+
+   
+
     const taskItem = {
         taskName,
         taskDescription,
         selectPriority,
         plannedDate,
-        actualDate
+        actualDate,
+        formIsValid
     };
-
+    
     createNewTask(taskItem);
+    localStorage.setItem(superStorageKey, JSON.stringify(taskArray));
 
     // modalWindow.classList.add("Modal-disabled");
     currentForm.reset();
-
-
 };
-
 
 currentForm.addEventListener("submit", currentFormOnSubmit);
 

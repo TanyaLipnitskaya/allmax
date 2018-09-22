@@ -30,3 +30,10 @@
     overflow: hidden;
 
 }
+.elementIsNotValid {
+    background-color: blueviolet;
+}
+
+.listOfCurrentTasks li{
+ cursor: pointer;   
+}
