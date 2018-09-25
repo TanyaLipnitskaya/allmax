@@ -19,13 +19,14 @@
     <div class="currentTasks">
         Текущие задачи
         <ol class="listOfCurrentTasks">
-            <li>Добавь меня</li>
+            <!-- <li>Добавь меня</li> -->
         </ol>
     </div>
     <button class="addTask">Добавить</button>
     </tbody>
     </table>
-    <div class="Modal Modal-disabled">Добавить задачу
+    <!-- Форма добавления новой задачи -->
+    <div class="Modal Modal-disabled" id="formCreation">Добавить задачу
         <form name="Form" >
 
             <div class="Inputs">
@@ -52,6 +53,37 @@
             <div class="Buttons">
                 <button type="submit">Создать</button>
                 <button type="reset">Отмена</button>
+            </div>
+        </form>
+    </div>
+    <!-- Форма редактирования созданной задачи -->
+    <div class="Modal Modal-disabled" id="formEditing">Редактировать задачу
+        <form name="editForm" >
+
+            <div class="Inputs">
+                <span>Название задачи
+                    <input type="text" name="taskName">
+                </span>
+                <span>Описание задачи
+                    <input name="taskDescription" type="text">
+                </span>
+                <span>Приоритет задачи
+                    <select name="selectPriority" id="">
+                        <option value="">Обычная</option>
+                        <option value="">Важная</option>
+                        <option value="">Очень важная</option>
+                    </select>
+                </span>
+                <span>Планируемая дата выполнения задачи
+                    <input name="plannedDate" type="date" id="">
+                </span>
+                <span>Фактическая дата выполнения задачи
+                    <input name="actualDate" type="date" id="">
+                </span>
+            </div>
+            <div class="Buttons">
+                <button type="submit">Сохранить</button>
+                <button type="reset">Удалить</button>
             </div>
         </form>
     </div>
