@@ -1,0 +1,22 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TanyaLipnitskaya/allmax.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TanyaLipnitskaya/allmax/issues"
+  },
+  "homepage": "https://github.com/TanyaLipnitskaya/allmax#readme",
+  "dependencies": {
+    "util.js": "0.0.0"
+  }
+}

@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>To-Do-v2-remastered-final(2.1)</title>
+    <link rel="stylesheet" href="/ToDo.9ad09f98.css" type="text/css">
+<script src="/ToDo.9ad09f98.js"></script></head>
+
+<body>
+    <div class="Date">Дата</div>
+
+    <!-- <table border="solid"> 
+        <thead>
+            <td>Текущие задачи</td>
+            <td>Закрытые задачи</td>
+        </thead>
+        <tbody class=""> -->
+    <!-- все пошло прахом, Костя -->
+    <div class="currentTasks">
+        Текущие задачи
+        <ol class="listOfCurrentTasks">
+            <!-- <li>Добавь меня</li> -->
+        </ol>
+    </div>
+    <button class="addTask">Добавить</button>
+    
+    
+    <!-- Форма добавления новой задачи -->
+    <div class="Modal Modal-disabled" id="formCreation">Добавить задачу
+        <form name="Form">
+
+            <div class="Inputs">
+                <span>Название задачи
+                    <input type="text" name="taskName">
+                </span>
+                <span>Описание задачи
+                    <input name="taskDescription" type="text">
+                </span>
+                <span>Приоритет задачи
+                    <select name="selectPriority" id="">
+                        <option value="">Обычная</option>
+                        <option value="">Важная</option>
+                        <option value="">Очень важная</option>
+                    </select>
+                </span>
+                <span>Планируемая дата выполнения задачи
+                    <input name="plannedDate" type="date" id="">
+                </span>
+                <span>Фактическая дата выполнения задачи
+                    <input name="actualDate" type="date" id="">
+                </span>
+            </div>
+            <div class="Buttons">
+                <button type="submit">Создать</button>
+                <button type="reset">Отмена</button>
+            </div>
+        </form>
+    </div>
+    <!-- Форма редактирования созданной задачи -->
+    <div class="Modal Modal-disabled" id="formEditing">Редактировать задачу
+        <form name="editForm">
+
+            <div class="Inputs">
+                <span>Название задачи
+                    <input type="text" name="taskName">
+                </span>
+                <span>Описание задачи
+                    <input name="taskDescription" type="text">
+                </span>
+                <span>Приоритет задачи
+                    <select name="selectPriority" id="">
+                        <option value="">Обычная</option>
+                        <option value="">Важная</option>
+                        <option value="">Очень важная</option>
+                    </select>
+                </span>
+                <span>Планируемая дата выполнения задачи
+                    <input name="plannedDate" type="date" id="">
+                </span>
+                <span>Фактическая дата выполнения задачи
+                    <input name="actualDate" type="date" id="">
+                </span>
+            </div>
+            <div class="Buttons">
+                <button type="submit">Сохранить</button>
+                <button type="reset">Удалить</button>
+            </div>
+        </form>
+    </div>
+    <script defer="" src="/ToDo.e31bb0bc.js"></script>
+</body>
+<footer>
+</footer>
+
+</html>
