@@ -9,6 +9,7 @@ import {
 const superStorageKey = "key";
 let taskArray = [];
 let index = 0;
+let currentUID = 0;
 
 // Селекторы
 const currentDateElement = document.querySelector(".Date");
@@ -44,13 +45,17 @@ if (localStorageTaskArray.length) {
         createNewTask(arrayElement)
     }
 }
+const writeCurrentTaskArraytoLS = () => {
+    setToLSasJSON(superStorageKey, taskArray)
+};
+
 
 
 // Обработчики event'ов
 // первое объявление переменной на редактирование формы
 // создается обработчик события (processor), дающий возможность обратиться к конкретному элементу формы. Именованная функция, чтобы решить проблему с разнесением логики
 function processor(event) {
-    const currentUID = event.target.dataset.uid;
+    currentUID = event.target.dataset.uid;
     editWindow.classList.remove("Modal-disabled");
     const currentEditForm = document.querySelector('form[name="editForm"]');
     // работа с html напрямую. 
@@ -84,11 +89,18 @@ const currentEditFormOnSubmit = (event) => {
 // Комментирую как хочу. И переменные называю как хочу. Эту вот хотела назвать Симба. Тут вешаается событие на редактирование формы.
 currentEditForm.addEventListener("submit", currentEditFormOnSubmit);
 
-const deleteFormOnReset = () => {
+const deleteFormOnReset = (event) => {
     editWindow.classList.add("Modal-disabled");
-    confirm("Вы действительно хотите удалить задачу?")
-}
+    const toDelete = confirm("Вы действительно хотите удалить задачу?")
+    if (toDelete) {
+        listOfCurrentTasks.removeChild(listOfCurrentTasks.children[currentUID])
+        taskArray.splice(currentUID, 1) 
+        writeCurrentTaskArraytoLS()
+    }
+};
+
 currentEditForm.addEventListener("reset", deleteFormOnReset);
+
 
 // События на добавление формы (отправить и отменить)
 const currentFormOnSubmit = (event) => {

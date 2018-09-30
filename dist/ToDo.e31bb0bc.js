@@ -161,7 +161,8 @@ var _util = require("./util.js");
 // Переменные
 var superStorageKey = "key";
 var taskArray = [];
-var index = 0; // Селекторы
+var index = 0;
+var currentUID = 0; // Селекторы
 
 var currentDateElement = document.querySelector(".Date");
 var editWindow = document.querySelector('#formEditing');
@@ -218,13 +219,17 @@ if (localStorageTaskArray.length) {
       }
     }
   }
-} // Обработчики event'ов
+}
+
+var writeCurrentTaskArraytoLS = function writeCurrentTaskArraytoLS() {
+  (0, _util.setToLSasJSON)(superStorageKey, taskArray);
+}; // Обработчики event'ов
 // первое объявление переменной на редактирование формы
 // создается обработчик события (processor), дающий возможность обратиться к конкретному элементу формы. Именованная функция, чтобы решить проблему с разнесением логики
 
 
 function processor(event) {
-  var currentUID = event.target.dataset.uid;
+  currentUID = event.target.dataset.uid;
   editWindow.classList.remove("Modal-disabled");
   var currentEditForm = document.querySelector('form[name="editForm"]'); // работа с html напрямую. 
 
@@ -260,9 +265,15 @@ var currentEditFormOnSubmit = function currentEditFormOnSubmit(event) {
 
 currentEditForm.addEventListener("submit", currentEditFormOnSubmit);
 
-var deleteFormOnReset = function deleteFormOnReset() {
+var deleteFormOnReset = function deleteFormOnReset(event) {
   editWindow.classList.add("Modal-disabled");
-  confirm("Вы действительно хотите удалить задачу?");
+  var toDelete = confirm("Вы действительно хотите удалить задачу?");
+
+  if (toDelete) {
+    listOfCurrentTasks.removeChild(listOfCurrentTasks.children[currentUID]);
+    taskArray.splice(currentUID, 1);
+    writeCurrentTaskArraytoLS();
+  }
 };
 
 currentEditForm.addEventListener("reset", deleteFormOnReset); // События на добавление формы (отправить и отменить)
@@ -326,7 +337,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52398" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55915" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
