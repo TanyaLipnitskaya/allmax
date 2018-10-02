@@ -1,7 +1,9 @@
 .Date {
     font-weight: 500;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 }
+
 .Modal {
     height: 50%;
     width: 50%;
@@ -11,29 +13,40 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 500;
     display: block;
-    
+
 }
+
 .Modal-disabled {
     display: none;
 }
 
 .Inputs span {
-   display: block;
+    display: block;
 }
+
 .Buttons {
     text-align: center;
-    }
+}
+
 .Buttons button {
     width: 10%;
     height: 20%;
     text-overflow: ellipsis;
     overflow: hidden;
 
-}
-.elementIsNotValid {
-    background-color: blueviolet;
+
+
 }
 
-.listOfCurrentTasks li{
- cursor: pointer;   
+.elementIsNotValid {
+    background-color: yellow;
+    width: 200px;
+
+
+}
+
+.listOfCurrentTasks li {
+    cursor: pointer;
+    margin: 15px auto;
+
 }
