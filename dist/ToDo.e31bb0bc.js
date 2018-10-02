@@ -146,6 +146,11 @@ exports.setToLSasJSON = setToLSasJSON;
 var getFromLSasJSON = function getFromLSasJSON(key) {
   try {
     var lsItem = localStorage.getItem(key);
+
+    if (lsItem === null) {
+      alert("Alas");
+    }
+
     return JSON.parse(lsItem);
   } catch (error) {
     alert(error);
@@ -158,158 +163,175 @@ exports.getFromLSasJSON = getFromLSasJSON;
 
 var _util = require("./util.js");
 
-// Переменные
-var superStorageKey = "key";
-var taskArray = [];
-var index = 0;
-var currentUID = 0; // Селекторы
+// загрузка списка при загрузке страницы
+var init = function init() {
+  // Переменные
+  var superStorageKey = "key";
+  var taskArray = [];
+  var index = 0;
+  var currentUID = 0; // Селекторы
 
-var currentDateElement = document.querySelector(".Date");
-var editWindow = document.querySelector('#formEditing');
-var listOfCurrentTasks = document.querySelector(".listOfCurrentTasks");
-var addTask = document.querySelector(".addTask");
-var modalWindow = document.querySelector('#formCreation');
-var currentEditForm = document.querySelector('form[name="editForm"]');
-var currentForm = document.querySelector('form[name="Form"]'); // Логика работы
-// Устанавливаем дату
+  var currentDateElement = document.querySelector(".Date");
+  var editWindow = document.querySelector('#formEditing');
+  var listOfCurrentTasks = document.querySelector(".listOfCurrentTasks");
+  var addTask = document.querySelector(".addTask");
+  var modalWindow = document.querySelector('#formCreation');
+  var currentEditForm = document.querySelector('form[name="editForm"]');
+  var currentForm = document.querySelector('form[name="Form"]'); // Логика работы
+  // Устанавливаем дату
 
-currentDateElement.innerHTML = new Date().toLocaleDateString(); // Создание нового элемента списка задач
+  currentDateElement.innerHTML = new Date().toLocaleDateString(); // Создание нового элемента списка задач
 
-var createNewTask = function createNewTask(taskItem) {
-  var listItem = document.createElement("li");
+  var createNewTask = function createNewTask(taskItem) {
+    var listItem = document.createElement("li");
 
-  if (taskItem.formIsValid == false) {
-    listItem.classList.add("elementIsNotValid");
+    if (taskItem.formIsValid == false) {
+      listItem.classList.add("elementIsNotValid");
+    }
+
+    ;
+    listItem.innerHTML = taskItem.taskName; // присвоение атрибута data-uid для того, чтобы обращаться к элементу списка по номеру.
+
+    listItem.dataset.uid = index;
+    listOfCurrentTasks.appendChild(listItem);
+    listItem.addEventListener("click", processor);
+    index++;
+    taskArray.push(taskItem);
+  }; // Работа с LS
+
+
+  var localStorageTaskArray = (0, _util.getFromLSasJSON)(superStorageKey);
+
+  if (localStorageTaskArray && localStorageTaskArray.length) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = localStorageTaskArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var arrayElement = _step.value;
+        createNewTask(arrayElement);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
+
+  var writeCurrentTaskArraytoLS = function writeCurrentTaskArraytoLS() {
+    (0, _util.setToLSasJSON)(superStorageKey, taskArray);
+  }; // Обработчики event'ов
+  // первое объявление переменной на редактирование формы
+  // создается обработчик события (processor), дающий возможность обратиться к конкретному элементу формы. Именованная функция, чтобы решить проблему с разнесением логики
+
+
+  function processor(event) {
+    currentUID = event.target.dataset.uid;
+    editWindow.classList.remove("Modal-disabled");
+    var currentEditForm = document.querySelector('form[name="editForm"]'); // работа с html напрямую. 
+
+    var formElement = currentEditForm.elements; // создается переменная, которая обращается к выбранному элементу в taskArray 
+
+    var pickedArrayElement = taskArray[currentUID]; // каждому input назначается хранимое значение в taskArray
+
+    formElement.taskName.value = pickedArrayElement.taskName;
+    formElement.taskDescription.value = pickedArrayElement.taskDescription;
+    formElement.selectPriority.value = pickedArrayElement.selectPriority;
+    formElement.plannedDate.value = pickedArrayElement.plannedDate;
+    formElement.actualDate.value = pickedArrayElement.actualDate;
   }
 
   ;
-  listItem.innerHTML = taskItem.taskName; // присвоение атрибута data-uid для того, чтобы обращаться к элементу списка по номеру.
 
-  listItem.dataset.uid = index;
-  listOfCurrentTasks.appendChild(listItem);
-  listItem.addEventListener("click", processor);
-  index++;
-  taskArray.push(taskItem);
-}; // Работа с LS
-
-
-var localStorageTaskArray = (0, _util.getFromLSasJSON)(superStorageKey);
-
-if (localStorageTaskArray.length) {
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = localStorageTaskArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var arrayElement = _step.value;
-      createNewTask(arrayElement);
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-}
-
-var writeCurrentTaskArraytoLS = function writeCurrentTaskArraytoLS() {
-  (0, _util.setToLSasJSON)(superStorageKey, taskArray);
-}; // Обработчики event'ов
-// первое объявление переменной на редактирование формы
-// создается обработчик события (processor), дающий возможность обратиться к конкретному элементу формы. Именованная функция, чтобы решить проблему с разнесением логики
-
-
-function processor(event) {
-  currentUID = event.target.dataset.uid;
-  editWindow.classList.remove("Modal-disabled");
-  var currentEditForm = document.querySelector('form[name="editForm"]'); // работа с html напрямую. 
-
-  var formElement = currentEditForm.elements; // создается переменная, которая обращается к выбранному элементу в taskArray 
-
-  var pickedArrayElement = taskArray[currentUID]; // каждому input назначается хранимое значение в taskArray
-
-  formElement.taskName.value = pickedArrayElement.taskName;
-  formElement.taskDescription.value = pickedArrayElement.taskDescription;
-  formElement.selectPriority.value = pickedArrayElement.selectPriority;
-  formElement.plannedDate.value = pickedArrayElement.plannedDate;
-  formElement.actualDate.value = pickedArrayElement.actualDate;
-}
-
-;
-
-var addTaskOnClick = function addTaskOnClick() {
-  modalWindow.classList.toggle("Modal-disabled");
-};
-
-addTask.addEventListener("click", addTaskOnClick); // и тут в игру врывается редактирование форм! Удар! Разработчик рыдает и пропускает переменную! Еще удар! Разработчик забивает на переменные! Зрители в экстазе! 
-
-var currentEditFormOnSubmit = function currentEditFormOnSubmit(event) {
-  event.preventDefault();
-  var formElement = event.target.elements;
-  var taskName = formElement.taskName.value;
-  var taskDescription = formElement.taskDescription.value;
-  var selectPriority = formElement.selectPriority.value;
-  var plannedDate = formElement.plannedDate.value;
-  var actualDate = formElement.actualDate.value;
-}; // Комментирую как хочу. И переменные называю как хочу. Эту вот хотела назвать Симба. Тут вешаается событие на редактирование формы.
-
-
-currentEditForm.addEventListener("submit", currentEditFormOnSubmit);
-
-var deleteFormOnReset = function deleteFormOnReset(event) {
-  editWindow.classList.add("Modal-disabled");
-  var toDelete = confirm("Вы действительно хотите удалить задачу?");
-
-  if (toDelete) {
-    listOfCurrentTasks.removeChild(listOfCurrentTasks.children[currentUID]);
-    taskArray.splice(currentUID, 1);
-    writeCurrentTaskArraytoLS();
-  }
-};
-
-currentEditForm.addEventListener("reset", deleteFormOnReset); // События на добавление формы (отправить и отменить)
-
-var currentFormOnSubmit = function currentFormOnSubmit(event) {
-  event.preventDefault();
-  var formElement = event.target.elements;
-  var taskName = formElement.taskName.value;
-  var taskDescription = formElement.taskDescription.value;
-  var selectPriority = formElement.selectPriority.value;
-  var plannedDate = formElement.plannedDate.value;
-  var actualDate = formElement.actualDate.value;
-  var formIsValid = taskName && taskDescription && plannedDate;
-  var taskItem = {
-    taskName: taskName,
-    taskDescription: taskDescription,
-    selectPriority: selectPriority,
-    plannedDate: plannedDate,
-    actualDate: actualDate,
-    formIsValid: formIsValid
+  var addTaskOnClick = function addTaskOnClick() {
+    modalWindow.classList.toggle("Modal-disabled");
   };
-  createNewTask(taskItem); // localStorage.setItem(superStorageKey, JSON.stringify(taskArray)); - старая версия
-  // делаем запись в LS с преобразованием JSON в виде строки. Преобразуем taskArray 
 
-  (0, _util.setToLSasJSON)(superStorageKey, taskArray); // modalWindow.classList.add("Modal-disabled");
+  addTask.addEventListener("click", addTaskOnClick); // и тут в игру врывается редактирование форм! Удар! Разработчик рыдает и пропускает переменную! Еще удар! Разработчик забивает на переменные! Зрители в экстазе! 
 
-  currentForm.reset();
+  var currentEditFormOnSubmit = function currentEditFormOnSubmit(event) {
+    event.preventDefault();
+    var formElement = event.target.elements;
+    var taskName = formElement.taskName.value;
+    var taskDescription = formElement.taskDescription.value;
+    var selectPriority = formElement.selectPriority.value;
+    var plannedDate = formElement.plannedDate.value;
+    var actualDate = formElement.actualDate.value;
+    var formIsValid = taskName && taskDescription && plannedDate;
+    var taskItem = {
+      taskName: taskName,
+      taskDescription: taskDescription,
+      selectPriority: selectPriority,
+      plannedDate: plannedDate,
+      actualDate: actualDate,
+      formIsValid: formIsValid
+    };
+    taskArray.splice(currentUID, 1, taskItem);
+    writeCurrentTaskArraytoLS();
+    window.location.reload();
+  }; // Комментирую как хочу. И переменные называю как хочу. Эту вот хотела назвать Симба. Тут вешаается событие на редактирование формы.
+
+
+  currentEditForm.addEventListener("submit", currentEditFormOnSubmit);
+
+  var deleteFormOnReset = function deleteFormOnReset(event) {
+    editWindow.classList.add("Modal-disabled");
+    var toDelete = confirm("Вы действительно хотите удалить задачу?");
+
+    if (toDelete) {
+      listOfCurrentTasks.removeChild(listOfCurrentTasks.children[currentUID]);
+      taskArray.splice(currentUID, 1);
+      writeCurrentTaskArraytoLS();
+    }
+  };
+
+  currentEditForm.addEventListener("reset", deleteFormOnReset); // События на добавление формы (отправить и отменить)
+
+  var currentFormOnSubmit = function currentFormOnSubmit(event) {
+    event.preventDefault();
+    var formElement = event.target.elements;
+    var taskName = formElement.taskName.value;
+    var taskDescription = formElement.taskDescription.value;
+    var selectPriority = formElement.selectPriority.value;
+    var plannedDate = formElement.plannedDate.value;
+    var actualDate = formElement.actualDate.value;
+    var formIsValid = taskName && taskDescription && plannedDate;
+    var taskItem = {
+      taskName: taskName,
+      taskDescription: taskDescription,
+      selectPriority: selectPriority,
+      plannedDate: plannedDate,
+      actualDate: actualDate,
+      formIsValid: formIsValid
+    };
+    createNewTask(taskItem); // localStorage.setItem(superStorageKey, JSON.stringify(taskArray)); - старая версия
+    // делаем запись в LS с преобразованием JSON в виде строки. Преобразуем taskArray 
+
+    (0, _util.setToLSasJSON)(superStorageKey, taskArray); // modalWindow.classList.add("Modal-disabled");
+
+    currentForm.reset();
+  };
+
+  currentForm.addEventListener("submit", currentFormOnSubmit);
+
+  var currentFormOnReset = function currentFormOnReset() {
+    modalWindow.classList.add("Modal-disabled");
+  };
+
+  currentForm.addEventListener("reset", currentFormOnReset);
 };
 
-currentForm.addEventListener("submit", currentFormOnSubmit);
-
-var currentFormOnReset = function currentFormOnReset() {
-  modalWindow.classList.add("Modal-disabled");
-};
-
-currentForm.addEventListener("reset", currentFormOnReset);
+document.addEventListener("DOMContentLoaded", init);
 },{"./util.js":"util.js"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -337,7 +359,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55915" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50029" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
