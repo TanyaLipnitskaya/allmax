@@ -50,3 +50,7 @@
     margin: 15px auto;
 
 }
+
+.deadlineIsFuckedUp {
+    background-color: red;
+}

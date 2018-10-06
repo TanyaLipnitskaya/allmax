@@ -13,6 +13,8 @@ const init = () => {
     let taskArray = [];
     let index = 0;
     let currentUID = 0;
+    const currentDate = new Date();
+
 
     // Селекторы
     const currentDateElement = document.querySelector(".Date");
@@ -25,13 +27,16 @@ const init = () => {
 
     // Логика работы
     // Устанавливаем дату
-    currentDateElement.innerHTML = new Date().toLocaleDateString();
+    currentDateElement.innerHTML = currentDate.toLocaleDateString();
     // Создание нового элемента списка задач
     const createNewTask = (taskItem) => {
         const listItem = document.createElement("li");
         if (taskItem.formIsValid == false) {
             listItem.classList.add("elementIsNotValid");
         };
+        if (dueDate(taskItem.plannedDate)) {
+            listItem.classList.add('deadlineIsFuckedUp');
+        }
         listItem.innerHTML = taskItem.taskName;
         // присвоение атрибута data-uid для того, чтобы обращаться к элементу списка по номеру.
         listItem.dataset.uid = index;
@@ -50,6 +55,11 @@ const init = () => {
     }
     const writeCurrentTaskArraytoLS = () => {
         setToLSasJSON(superStorageKey, taskArray)
+    };
+    // поиск просроченных задач, именованная функция
+    function dueDate(checkDate) {
+        const compareDates = new Date(checkDate)
+        return compareDates < currentDate;
     };
 
 
