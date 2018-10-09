@@ -29,7 +29,7 @@ const init = () => {
     // Устанавливаем дату
     currentDateElement.innerHTML = currentDate.toLocaleDateString();
     // Создание нового элемента списка задач
-    const createNewTask = (taskItem) => {
+    const createNewTask = (taskItem, itemNumber) => {
         const listItem = document.createElement("li");
         if (taskItem.formIsValid == false) {
             listItem.classList.add("elementIsNotValid");
@@ -40,10 +40,16 @@ const init = () => {
         listItem.innerHTML = taskItem.taskName;
         // присвоение атрибута data-uid для того, чтобы обращаться к элементу списка по номеру.
         listItem.dataset.uid = index;
-        listOfCurrentTasks.appendChild(listItem);
+        if (itemNumber == 0 || itemNumber) {
+            listOfCurrentTasks.insertBefore(listItem, listOfCurrentTasks.children[itemNumber])
+            taskArray.splice(itemNumber, 1, taskItem);
+
+        } else {
+            listOfCurrentTasks.appendChild(listItem)
+            taskArray.push(taskItem);
+        };
         listItem.addEventListener("click", processor)
         index++;
-        taskArray.push(taskItem);
     };
     // Работа с LS
 
@@ -110,10 +116,12 @@ const init = () => {
             formIsValid
         };
 
-        taskArray.splice(currentUID, 1, taskItem);
-        writeCurrentTaskArraytoLS()
 
-        window.location.reload();
+        listOfCurrentTasks.removeChild(listOfCurrentTasks.children[currentUID])
+        createNewTask(taskItem, currentUID)
+
+        writeCurrentTaskArraytoLS()
+        // window.location.reload();
     };
 
     // Комментирую как хочу. И переменные называю как хочу. Эту вот хотела назвать Симба. Тут вешаается событие на редактирование формы.

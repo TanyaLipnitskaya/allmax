@@ -9,6 +9,6 @@
         "request": "launch",
         "url": "http://localhost:1234/",
         "webRoot": "${workspaceFolder}/",
-        "breakOnLoad": true,
+        // "breakOnLoad": true,
     }]
 }
